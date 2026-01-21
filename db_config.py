@@ -1,4 +1,10 @@
-host = "localhost"
-user = "root"
-password = "password"
-database = "student_db"
+import mysql.connector
+
+
+def get_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="password",
+        database="student_db"
+    )

@@ -4,45 +4,90 @@
 # 2. Show menu:
 #    a) Add student
 #    b) View students
-#    c) Delete student
+#    c) Update student
+#    d) Delete student
 # 3. Take user unput
 # 4. Perform database operation
 
-import mysql.connector
+from db_config import get_connection
 
-conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="password",
-    database="student_db"
-)
-
+conn = get_connection()
 cursor = conn.cursor()
 print("Connected to database")
 
 
-def add_student():
-    name = input("Enter name : ")
+def get_valid_int(message):
     try:
-        age = int(input("Enter age : "))
+        value = input(message).strip()
+
+        if value == "":
+            print("Input cannot be empty.")
+            return None
+
+        number = int(value)
+        return number
+
     except ValueError:
-        print("Please enter a valid number.")
-    course = input("Enter course : ")
+        print("Invalid Input. Please enter a valid numeric number.")
+        return None
+    except Exception as e:
+        print("Unexpected error occurred: ", e)
+        return None
 
-    query = "INSERT INTO students (sname, age, course) VALUES (%s, %s, %s)"
-    values = (name, age, course)
 
-    cursor.execute(query, values)
-    conn.commit()
-    print("\nStudent added successfully")
+def get_valid_string(message):
+    try:
+        value = input(message).strip()
+
+        if value == "":
+            print("Input cannot be empty.")
+            return None
+
+        return value
+
+    except Exception as e:
+        print("Unexpected error occurred: ", e)
+        return None
+
+
+def add_student():
+    name = get_valid_string("Enter name : ")
+    if name is None:
+        return
+
+    age = get_valid_int("Enter age : ")
+    if age is None:
+        return
+
+    course = get_valid_string("Enter course : ")
+    if course is None:
+        return
+
+    try:
+        query = "INSERT INTO students (sname, age, course) VALUES (%s, %s, %s)"
+        values = (name, age, course)
+        cursor.execute(query, values)
+        conn.commit()
+        print("\nStudent added successfully")
+    except Exception as e:
+        print("Database error: ", e)
+
+
+def view_students():
+    cursor.execute("SELECT * FROM students")
+    students = cursor.fetchall()
+
+    if not students:
+        print("\nNo students found.")
+    else:
+        for student in students:
+            print(student)
 
 
 def update_student():
     try:
-        try:
-            student_id = int(input("Enter student ID to update: "))
-        except ValueError:
-            print("Please enter a valid numeric ID number.")
+        student_id = get_valid_int("Enter student ID to update: ")
+        if student_id is None:
             return
 
         try:
@@ -64,17 +109,26 @@ def update_student():
         choice = input("\nEnter your choice (1-3): ")
 
         if choice == "1":
-            new_name = input("\nEnter new name: ")
+            new_name = get_valid_string("\nEnter new name: ")
+            if new_name is None:
+                return
+
             query = "UPDATE students SET sname = %s WHERE id = %s"
             values = (new_name, student_id)
 
         elif choice == "2":
-            new_age = int(input("\nEnter new age: "))
+            new_age = get_valid_int("Enter new age : ")
+            if new_age is None:
+                return
+
             query = "UPDATE students SET age = %s WHERE id = %s"
             values = (new_age, student_id)
 
         elif choice == "3":
-            new_course = input("\nEnter new course: ")
+            new_course = get_valid_string("\nEnter new course: ")
+            if new_course is None:
+                return
+
             query = "UPDATE students SET course = %s WHERE id = %s"
             values = (new_course, student_id)
 
@@ -98,10 +152,9 @@ def update_student():
 
 def delete_student():
     try:
-        try:
-            student_id = int(input("Enter student ID to delete: "))
-        except ValueError:
-            print("Please enter a valid numeric ID number.")
+        student_id = get_valid_int("Enter student ID to delete: ")
+        if student_id is None:
+            return
 
         query = "DELETE FROM students WHERE id = %s"
         cursor.execute(query, (student_id,))
@@ -117,23 +170,12 @@ def delete_student():
         print("Error occurred while deleting student: ", e)
 
 
-def view_students():
-    cursor.execute("SELECT * FROM students")
-    students = cursor.fetchall()
-
-    if not students:
-        print("\nNo students found.")
-    else:
-        for student in students:
-            print(student)
-
-
 while True:
     print("\n---------- Student Management System ----------")
     print("1. Add Student")
-    print("2. Update Student")
-    print("3. Delete Student")
-    print("4. View Students")
+    print("2. View Students")
+    print("3. Update Student")
+    print("4. Delete Student")
     print("5. Exit")
 
     choice = input("\nEnter your choice (1-5): ")
@@ -143,13 +185,13 @@ while True:
         add_student()
     elif choice == "2":
         print("\n")
-        update_student()
+        view_students()
     elif choice == "3":
         print("\n")
-        delete_student()
+        update_student()
     elif choice == "4":
         print("\n")
-        view_students()
+        delete_student()
     elif choice == "5":
         print("\nExiting program...")
         break
