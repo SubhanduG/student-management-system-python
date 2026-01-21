@@ -4,7 +4,6 @@ This project demonstrates my hands-on experience in backend development using Py
 The focus of the project is on clean architecture, database interaction, input validation and real-world backend practices.
 
 
-
 ## Project Overview
 This is a menu-driven backend application that performs full CRUD (Create, Read, Update, Delete) operations on structured data stored in a MySQL database. The application is designed with proper validation, error handling an clean control flow to ensure data integrity and stability.
 
