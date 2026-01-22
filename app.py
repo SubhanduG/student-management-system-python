@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from db_config import get_connection
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/")
@@ -14,9 +16,18 @@ def get_students():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute("SELECT * FROM students")
-    students = cursor.fetchall()
-    cursor.close()
+    rows = cursor.fetchall()
     conn.close()
+
+    students = []
+
+    for r in rows:
+        students.append({
+            "id": r["id"],
+            "name": r["sname"],
+            "age": r["age"],
+            "course": r["course"]
+        })
 
     return jsonify(students), 200
 
@@ -25,11 +36,11 @@ def get_students():
 def add_student_api():
     data = request.get_json()
 
-    name = data.get("name")
+    sname = data.get("sname")
     age = data.get("age")
     course = data.get("course")
 
-    if not name or not age or not course:
+    if not sname or not age or not course:
         return jsonify({"error": "invalid input data"}), 400
 
     try:
@@ -37,9 +48,8 @@ def add_student_api():
         cursor = conn.cursor()
 
         query = "INSERT INTO students (sname, age, course) VALUES (%s, %s, %s)"
-        cursor.execute(query, (name, age, course))
+        cursor.execute(query, (sname, age, course))
         conn.commit()
-        cursor.close()
         conn.close()
 
         return jsonify({"message": "Student added successfully"}), 201

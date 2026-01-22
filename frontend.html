@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Management</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 40px;
+        }
+
+        input,
+        button {
+            padding: 8px;
+            margin: 5px;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+            width: 70%;
+        }
+
+        th,
+        td {
+            border: 1px solid #444;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Add Student</h2>
+
+    <input type="text" id="name" placeholder="Name">
+    <input type="number" id="age" placeholder="Age">
+    <input type="text" id="course" placeholder="Course">
+    <button onclick="addStudent()">Add Student</button>
+
+    <p id="message"></p>
+
+    <hr>
+
+    <h2>Student List</h2>
+
+    <button onclick="loadStudents()">Load Students</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Course</th>
+            </tr>
+        </thead>
+        <tbody id="studentTableBody"></tbody>
+    </table>
+
+    <script>
+        const API_URL = "http://127.0.0.1:5000/students"
+
+        function addStudent() {
+            const snameInput = document.getElementById("name");
+            const ageInput = document.getElementById("age");
+            const courseInput = document.getElementById("course");
+
+            const sname = snameInput.value;
+            const age = ageInput.value;
+            const course = courseInput.value;
+
+            if (!sname || !age || !course) {
+                document.getElementById("message").innerText = "All fields are required.";
+                return;
+            }
+
+            fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    sname: sname,
+                    age: Number(age),
+                    course: course
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("message").innerText = "Student added successfully.";
+                    loadStudents();
+                })
+                .catch(error => {
+                    document.getElementById("message").innerText = "Error adding student.";
+                    console.error(error)
+                });
+        }
+
+        function loadStudents() {
+            fetch(API_URL)
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById("studentTableBody");
+                    tableBody.innerHTML = "";
+
+                    if (data.length === 0) {
+                        tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4">No students found</td>
+                        </tr>    
+                        `;
+                        return;
+                    }
+
+                    data.forEach(student => {
+                        const row = `
+                            <tr>
+                                <td>${student.id}</td>
+                                <td>${student.name}</td>
+                                <td>${student.age}</td>
+                                <td>${student.course}</td>
+                            </tr>
+                        `;
+                        tableBody.innerHTML += row;
+
+                    });
+                })
+                .catch(error => {
+                    console.error("Error loading students:", error);
+                });
+        }
+    </script>
+
+</body>
+
+</html>
