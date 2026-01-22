@@ -52,6 +52,8 @@
 
     <button onclick="loadStudents()">Load Students</button>
 
+    <button onclick="updateStudent()">Update Student</button>
+
     <table>
         <thead>
             <tr>
@@ -126,6 +128,10 @@
                                 <td>${student.name}</td>
                                 <td>${student.age}</td>
                                 <td>${student.course}</td>
+                                <td>
+                                    <button onclick="editStudent(${student.id}, '${student.name}', ${student.age}, '${student.course}')">Edit</button>
+                                    <button onclick="deleteStudent(${student.id})">Delete</button>
+                                </td>    
                             </tr>
                         `;
                         tableBody.innerHTML += row;
@@ -135,6 +141,56 @@
                 .catch(error => {
                     console.error("Error loading students:", error);
                 });
+        }
+
+        let selectedStudentId = null;
+
+        function editStudent(id, name, age, course) {
+            selectedStudentId = id;
+            document.getElementById("name").value = name;
+            document.getElementById("age").value = age;
+            document.getElementById("course").value = course;
+        }
+
+        function updateStudent() {
+            if (!selectedStudentId) {
+                alert("No student selected");
+                return;
+            }
+
+            fetch(`${API_URL}/${selectedStudentId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    sname: document.getElementById("name").value,
+                    age: Number(document.getElementById("age").value),
+                    course: document.getElementById("course").value
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    selectedStudentId = null;
+                    loadStudents();
+                });
+        }
+
+        function deleteStudent(id) {
+            if (!confirm("Are you sure you want to delete?")) {
+                return;
+            }
+
+            fetch(`${API_URL}/${id}`, {
+                method: "DELETE",
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    loadStudents();
+                });
+
         }
     </script>
 

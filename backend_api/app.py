@@ -57,5 +57,48 @@ def add_student_api():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route("/students/<int:student_id>", methods=["PUT"])
+def update_student_api(student_id):
+    data = request.get_json()
+
+    sname = data.get("sname")
+    age = data.get("age")
+    course = data.get("course")
+
+    if not sname or not age or not course:
+        return jsonify({"error": "invalid input data"}), 400
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id FROM students WHERE id = %s", (student_id,))
+    if cursor.fetchone() is None:
+        conn.close()
+        return jsonify({"error": "Student not found"}), 404
+
+    cursor.execute("UPDATE students SET sname = %s, age = %s, course = %s WHERE id = %s",
+                   (sname, age, course, student_id))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Student updated successfully."}), 200
+
+
+@app.route("/students/<int:student_id>", methods=["DELETE"])
+def delete_student_api(student_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM students WHERE id = %s", (student_id,))
+    conn.commit()
+
+    if cursor.rowcount == 0:
+        conn.close()
+        return jsonify({"error": "Student not found."}), 404
+
+    conn.close()
+    return jsonify({"message": "Student deleted successfully."}), 200
+
+
 if __name__ == "__main__":
     app.run(debug=True)
