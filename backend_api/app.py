@@ -13,9 +13,17 @@ def home():
 
 @app.route("/students", methods=["GET"])
 def get_students():
+    sort = request.args.get("sort", "created_desc")
+
+    order_by = {
+        "name": "sname ASC",
+        "created_asc": "created_at ASC",
+        "created_desc": "created_at DESC",
+        "updated_desc": "updated_at DESC"
+    }.get(sort, "created_at DESC")
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM students")
+    cursor.execute(f"SELECT * FROM students ORDER BY {order_by}")
     rows = cursor.fetchall()
     conn.close()
 
@@ -26,7 +34,9 @@ def get_students():
             "id": r["id"],
             "name": r["sname"],
             "age": r["age"],
-            "course": r["course"]
+            "course": r["course"],
+            "created_at": r["created_at"],
+            "updated_at": r["updated_at"]
         })
 
     return jsonify(students), 200
