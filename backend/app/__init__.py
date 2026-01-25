@@ -17,11 +17,7 @@ def create_app():
     cors.init_app(app, supports_credentials=True)
 
     app.register_blueprint(pages_bp)
-    app.register_blueprint(auth_bp, url_prefix="/api")
+    app.register_blueprint(auth_bp)
     app.register_blueprint(students_bp)
-
-    @app.route("/")
-    def home():
-        return "Backend API is running"
 
     return app

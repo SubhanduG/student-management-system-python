@@ -5,13 +5,13 @@ from backend.app.services.students_service import (
 students_bp = Blueprint("students", __name__, url_prefix="/students")
 
 
-def login_required():
+def is_logged_in():
     return "user_id" in session
 
 
 @students_bp.route("", methods=["GET"])
 def get_students():
-    if not login_required():
+    if not is_logged_in():
         return jsonify({"error": "Unauthorized"}), 401
 
     sort = request.args.get("sort", "created_desc")
@@ -20,7 +20,7 @@ def get_students():
 
 @students_bp.route("", methods=["POST"])
 def add_student():
-    if not login_required():
+    if not is_logged_in():
         return jsonify({"error": "Unauthorized"}), 401
 
     data = request.get_json()
@@ -38,7 +38,7 @@ def add_student():
 
 @students_bp.route("/<int:student_id>", methods=["PUT"])
 def edit_student(student_id):
-    if not login_required():
+    if not is_logged_in():
         return jsonify({"error": "Unauthorized"}), 401
 
     data = request.get_json()
@@ -50,7 +50,7 @@ def edit_student(student_id):
 
 @students_bp.route("/<int:student_id>", methods=["DELETE"])
 def remove_student(student_id):
-    if not login_required():
+    if not is_logged_in():
         return jsonify({"error": "Unauthorized"}), 401
 
     if not delete_student(student_id):

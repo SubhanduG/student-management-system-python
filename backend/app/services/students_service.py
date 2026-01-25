@@ -7,7 +7,7 @@ def fetch_students(sort):
         "created_asc": "created_at ASC",
         "created_desc": "created_at DESC",
         "updated_desc": "updated_at DESC"
-    }.get(sort, "created_at DESC")
+    }.get(sort or "created_desc", "created_at DESC")
 
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)

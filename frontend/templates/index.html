@@ -15,6 +15,11 @@
 
         <h2 class="text-center mb-4">Student Management System</h2>
 
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">Student Management System</h2>
+            <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+        </div>
+
         <!-- Add / Update Student -->
         <div class="card shadow mb-4">
             <div class="card-header bg-primary text-white">
@@ -57,7 +62,7 @@
             <div class="mb-3">
                 <select class="form-select w-25" onchange="loadStudents(this.value)">
                     <option value="">Sort By</option>
-                    <option value="name">Name (A–Z)</option>
+                    <option value="name">Name (A-Z)</option>
                     <option value="created_asc">Oldest First</option>
                     <option value="created_desc">Newest First</option>
                     <option value="updated_desc">Recently Updated</option>
@@ -89,6 +94,26 @@
     <script>
         const API_URL = "http://127.0.0.1:5000/students"
 
+        function logout() {
+            if (!confirm("Are you sure you want to logout?")) {
+                return;
+            }
+
+            fetch("/logout", {
+                method: "POST",
+                credentials: "include"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    window.location.href = "/login";
+                })
+                .catch(error => {
+                    console.error("Logout failed:", error);
+                    alert("Failed to logout. Try again.");
+                });
+        }
+
+
         function showMessage(text, color = "success") {
             const msg = document.getElementById("message");
             msg.innerText = text;
@@ -108,6 +133,7 @@
 
             fetch(API_URL, {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -132,7 +158,7 @@
         let currentPage = 1;
         const studentsPerPage = 5;
         function loadStudents(sort = "") {
-            fetch(`${API_URL}?sort=${sort}`)
+            fetch(`${API_URL}?sort=${sort}`, { credentials: "include" })
                 .then(response => response.json())
                 .then(data => {
                     studentsCache = data;
@@ -258,6 +284,7 @@
 
             fetch(`${API_URL}/${selectedStudentId}`, {
                 method: "PUT",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -290,6 +317,7 @@
 
             fetch(`${API_URL}/${id}`, {
                 method: "DELETE",
+                credentials: "include",
             })
                 .then(response => response.json())
                 .then(data => {

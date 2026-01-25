@@ -4,6 +4,11 @@ pages_bp = Blueprint("pages", __name__)
 
 
 @pages_bp.route("/")
+def home():
+    return redirect(url_for("pages.login_page"))
+
+
+@pages_bp.route("/login")
 def login_page():
     if "user_id" in session:
         return redirect(url_for("pages.dashboard"))
