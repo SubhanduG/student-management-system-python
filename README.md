@@ -130,7 +130,7 @@ student-management-system-python/
 ![Login](frontend/static/images/screenshots/login_ss.png)
 
 - **Register Page**  
-![Login](frontend/static/images/screenshots/register_ss.png)
+![Register](frontend/static/images/screenshots/register_ss.png)
 
 - **Dashboard / Add Student**  
 ![Dashboard](frontend/static/images/screenshots/dashboard_ss.png)
