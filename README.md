@@ -115,12 +115,14 @@ CREATE DATABASE student_db;
 ```
 
 🔹Update .env with your MySQL credentials:
+```ini
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=yourpassword
 DB_NAME=student_db
 SECRET_KEY=super-secret-key
 FLASK_ENV=development
+```
 
 🔹Run the SQL schema:
 ```bash
