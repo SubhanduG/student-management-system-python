@@ -1,88 +1,176 @@
 # Backend Data Management Application (Python + MySQL)
 
-This project demonstrates my hands-on experience in backend development using Python and MySQL.
-The focus of the project is on clean architecture, database interaction, input validation and real-world backend practices.
+A **full-stack Student Management System** built with **Python (Flask), MySQL, and Bootstrap**, allowing users to **register, login, manage students**, and perform CRUD operations via both **web interface** and **CLI tool**.  
 
+This project demonstrates **web development, REST API design, authentication, database integration, and frontend-backend interaction**, making it ideal for showcasing full-stack skills.
 
-## Project Overview
-This is a menu-driven backend application that performs full CRUD (Create, Read, Update, Delete) operations on structured data stored in a MySQL database. The application is designed with proper validation, error handling an clean control flow to ensure data integrity and stability.
+---
 
+## 🔹 Features
 
-## Features
-- Add new records with validation
-- View stored records
-- Update existing records safely
-- Delete records using unique identifiers
-- Menu-driven command-line interface
-- Proper handling of invalid input and database errors
+### **User Authentication**
+- Register new users.
+- Login with **session-based authentication**.
+- Reset forgotten passwords.
+- Passwords securely **hashed using Werkzeug**.
 
+### **Student Management**
+- Add, Update, and Delete student records.
+- View all students with **pagination**.
+- Sort students by **name, creation date, and last updated date**.
+- Dynamic **dashboard interface** built with **Bootstrap 5**.
 
-## Technologies Used
-- **Python**
-- **MySQL**
-- **mysql-connector-python**
-- **Git & GitHub**
-- **VS Code**
+### **CLI Interface**
+- Command-line interface to manage students offline.
+- Add, View, Update, Delete student records via terminal.
+- Validates user input for age, name, and course.
 
+### **Tech Stack**
+- **Editor:** VS Code
+- **Backend:** Python, Flask, Flask-CORS
+- **Database:** MySQL
+- **Frontend:** HTML, Bootstrap 5, JavaScript (Fetch API)
+- **Security:** Password hashing, session management
+- **Others:** dotenv for environment configuration
 
-## Concepts Implemented
-- Backend application design
-- CRUD operations
-- Python-MySQL connectivity
-- Parameterized SQL queries
-- Input validation for numeric and text fields
-- Exception handling using try-except
-- Clean execution flow using early returns
-- Version control using Git
+---
 
+## 🔹 Project Structure
 
-## Project Structure
-student-management-system-python
-|-----db_config.py
-|-----main.py
-|-----README.md
-|-----requirements.txt
+student-management-system-python/
+│
+├── backend/
+│   ├── app/
+│   │   ├── routes/
+│   │   │   ├── __init__.py
+│   │   │   ├── auth.py
+│   │   │   ├── pages.py
+│   │   │   └── students.py
+│   │   │
+│   │   ├── services/
+│   │   │   ├── __init__.py
+│   │   │   ├── auth_service.py
+│   │   │   └── students_service.py
+│   │   │
+│   │   ├── __init__.py
+│   │   ├── config.py
+│   │   └── extensions.py
+│   │
+│   ├── cli/
+│   │   ├── __init__.py
+│   │   ├── __main__.py
+│   │   └── main.py
+│   │
+│   ├── __init__.py
+│   └── run.py
+│
+├── database/
+│   ├── db_config.py
+│   └── schema.sql
+│
+├── frontend/
+│   ├── static/
+│   │   ├── css/
+│   │   ├── images/
+│   │   └── js/
+│   │
+│   └── templates/
+│       ├── login.html
+│       ├── register.html
+│       ├── forgot_password.html
+│       └── index.html
+│
+├── venv/
+├── .env
+├── README.md
+└── requirements.txt
 
+---
 
-## How to Run the Application
+## 🔹 Installation
 
-### Prerequisites
-- Python installed
-- MySQL server running
-- MySQL database configured
+### 1. Clone the repository
+```bash
+git clone https://github.com/SubhanduG/student-management-system-python.git
+cd student-management-system-python
+```
 
-### Database Setup
-- '''sql
-    CREATE DATABASE IF NOT EXISTS student_db;
-    USE student_db;
-    CREATE TABLE IF NOT EXISTS students (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        sname VARCHAR(50) NOT NULL,
-        age INT NOT NULL,
-        course VARCHAR(50) NOT NULL
-    );
+### 2. Setup Python environment
+```bash
+python -m venv venv
+source venv/bin/activate   # Linux / Mac
+venv\Scripts\activate      # Windows
+```
 
-### Install Dependencies
-- '''bash 
-    pip install -r requirements.txt
+### 3. Install dependencies
+```bash
+pip install -r requirements.txt
+```
 
-### Run the Application
-- '''bash
-    python main.py
+### 4. Configure Database
 
+🔹Create a MySQL database:
+```sql
+CREATE DATABASE student_db;
+```
 
-## Future Enhancements
-- Convert application to REST APIs using Flask
-- Add authentication and authorization
-- Improve logging mechanism
-- Deploy application on cloud infrastructure
+🔹Update .env with your MySQL credentials:
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=yourpassword
+DB_NAME=student_db
+SECRET_KEY=super-secret-key
+FLASK_ENV=development
 
+🔹Run the SQL schema:
+```bash
+mysql -u root -p student_db < database/schema.sql
+```
 
-## Author
+### 5. Run the Flask App
+```bash
+python -m backend.run
+```
+Access the app at: http://127.0.0.1:5000
+
+### 6. Run the CLI Tool (Optional)
+```bash
+python -m backend.cli
+```
+
+---
+
+## 🔹 Skills & Learnings Demonstrated
+
+- Full-stack development with Python Flask and Bootstrap
+- RESTful API design with CRUD operations
+- Session-based authentication and password hashing
+- Database integration with MySQL
+- Frontend interactivity using JavaScript Fetch API
+- CLI development for offline management
+- Handling pagination, sorting, and validation
+- Environment configuration using dotenv
+
+---
+
+## 🔹 Future Enhancements
+
+- Add user roles (Admin/Student) and permissions.
+- Improve UI/UX with a modern frontend framework (React/Vue).
+- Add search functionality for students.
+- Implement JWT authentication for API security.
+- Deploy to Heroku or AWS for live demonstration.
+
+---
+
+## 🔹 Author
+
 Subhandu Ghosh
 MSc Computer Science
 Backend & Full-Stack Developer (Fresher)
 
+---
 
-# Purpose
-This project was built to strengthen backend development fundamentals and demonstrate the ability to design, implement and manage a reliable data-driven application using Python and MySQL.
+## 🔹 Purpose
+
+This Student Management System is a full-stack web application built with Python Flask, MySQL, and Bootstrap that enables users to securely register, log in, and manage student records with features like add, update, delete, sorting, and pagination. It demonstrates practical CRUD operations, session management, and responsive UI development, making it an ideal portfolio project for freshers to showcase real-world web development skills.

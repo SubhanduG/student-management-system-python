@@ -122,12 +122,17 @@
 
 
         function addStudent() {
-            const sname = document.getElementById("name").value;
-            const age = document.getElementById("age").value;
-            const course = document.getElementById("course").value;
+            const sname = document.getElementById("name").value.trim();
+            const age = document.getElementById("age").value.trim();
+            const course = document.getElementById("course").value.trim();
 
             if (!sname || !age || !course) {
                 showMessage("All fields are required.", "danger");
+                return;
+            }
+
+            if (isNaN(age) || Number(age) <= 0) {
+                showMessage("Age must be a valid number.", "danger");
                 return;
             }
 
@@ -282,6 +287,24 @@
                 return;
             }
 
+            const nameInput = document.getElementById("name");
+            const ageInput = document.getElementById("age");
+            const courseInput = document.getElementById("course");
+
+            const sname = nameInput.value.trim();
+            const age = ageInput.value.trim();
+            const course = courseInput.value.trim();
+
+            if (!sname || !age || !course) {
+                showMessage("All fields are required.", "danger");
+                return;
+            }
+
+            if (isNaN(age) || Number(age) <= 0) {
+                showMessage("Age must be a valid number.", "danger");
+                return;
+            }
+
             fetch(`${API_URL}/${selectedStudentId}`, {
                 method: "PUT",
                 credentials: "include",
@@ -289,24 +312,34 @@
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    sname: document.getElementById("name").value,
-                    age: Number(document.getElementById("age").value),
-                    course: document.getElementById("course").value
+                    sname: sname,
+                    age: Number(age),
+                    course: course
                 })
             })
                 .then(response => response.json())
                 .then(data => {
-                    showMessage(data.message);
+                    if (data.error) {
+                        showMessage(data.error, "danger");
+                        return;
+                    }
+
+                    showMessage(data.message, "success");
+
                     selectedStudentId = null;
 
-                    name.value = "";
-                    age.value = "";
-                    course.value = "";
+                    nameInput.value = "";
+                    ageInput.value = "";
+                    courseInput.value = "";
 
                     document.getElementById("updateBtn").classList.add("d-none");
+                    document.getElementById("cancelBtn").classList.add("d-none");
                     document.getElementById("addBtn").disabled = false;
 
                     loadStudents();
+                })
+                .catch(() => {
+                    showMessage("Something went wrong. Please try again.", "danger");
                 });
         }
 
