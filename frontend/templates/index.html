@@ -4,63 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Student Management System</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main_style.css') }}">
 </head>
 
-<body class="bg-light">
+<body class="index-bg">
 
-    <div class="container mt-5">
+    <div class="container">
 
-        <h2 class="text-center mb-4">Student Management System</h2>
-
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="mb-0">Student Management System</h2>
-            <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+        <div class="app-header">
+            <div class="app-header-left">
+                <h1>🎓 Student Management System</h1>
+                <p>Manage students, courses, and records</p>
+            </div>
+            <button class="btn-danger" onclick="logout()">Logout</button>
         </div>
 
-        <!-- Add / Update Student -->
-        <div class="card shadow mb-4">
-            <div class="card-header bg-primary text-white">
-                Add / Update Student
-            </div>
+        <div class="card">
+            <div class="card-header bg-primary">Add / Update Student</div>
 
             <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <input type="text" id="name" class="form-control" placeholder="Student Name">
-                    </div>
-
-                    <div class="col-md-4">
-                        <input type="number" id="age" class="form-control" placeholder="Age" min="1" max="99"
-                            oninput="this.value = Math.min(this.value, 99)">
-                    </div>
-
-                    <div class="col-md-4">
-                        <input type="text" id="course" class="form-control" placeholder="Course">
-                    </div>
+                <div class="form-row">
+                    <input type="text" id="name" placeholder="Student Name">
+                    <input type="number" id="age" placeholder="Age" min="1" max="99"
+                        oninput="this.value=Math.min(this.value,99)">
+                    <input type="text" id="course" placeholder="Course">
                 </div>
 
-                <div class="mt-3">
-                    <button id="addBtn" class="btn btn-success" onclick="addStudent()">Add Student</button>
-                    <button id="updateBtn" class="btn btn-warning d-none" onclick="updateStudent()">Update
-                        Student</button>
-                    <button id="cancelBtn" class="btn btn-secondary d-none" onclick="cancelEdit()">Cancel Edit</button>
+                <div class="btn-row">
+                    <button id="addBtn" class="btn-success" onclick="addStudent()">Add Student</button>
+                    <button id="updateBtn" class="btn-warning d-none" onclick="updateStudent()">Update Student</button>
+                    <button id="cancelBtn" class="btn-secondary d-none" onclick="cancelEdit()">Cancel Edit</button>
                 </div>
 
-                <p id="message" class="mt-3 fw-bold"></p>
+                <p id="message"></p>
             </div>
         </div>
 
-        <!-- Student List -->
-        <div class="card shadow">
-            <div class="card-header bg-dark text-white d-flex justify-content-between">
+        <div class="card">
+            <div class="card-header bg-dark card-header-flex">
                 <span>Student List</span>
-                <button class="btn btn-sm btn-light" onclick="loadStudents()">Refresh</button>
+                <button class="btn-secondary" onclick="loadStudents()">Refresh</button>
             </div>
-            <div class="mb-3">
-                <select class="form-select w-25" onchange="loadStudents(this.value)">
+
+            <div class="filter-row">
+                <select onchange="loadStudents(this.value)">
                     <option value="">Sort By</option>
                     <option value="name">Name (A-Z)</option>
                     <option value="created_asc">Oldest First</option>
@@ -70,8 +57,8 @@
             </div>
 
             <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead class="table-secondary">
+                <table>
+                    <thead>
                         <tr>
                             <th>S.No</th>
                             <th>Name</th>
@@ -84,287 +71,14 @@
                     <tbody id="studentTableBody"></tbody>
                 </table>
             </div>
-            <div id="showingText" class="mb-2 text-muted text-center"></div>
-            <nav aria-label="Student list pagination" class="mt-3">
-                <ul id="pagination" class="pagination justify-content-center"></ul>
-            </nav>
+
+            <div id="showingText" class="showing-text"></div>
+            <ul id="pagination" class="pagination"></ul>
         </div>
 
     </div>
-    <script>
-        const API_URL = "http://127.0.0.1:5000/students"
 
-        function logout() {
-            if (!confirm("Are you sure you want to logout?")) {
-                return;
-            }
-
-            fetch("/logout", {
-                method: "POST",
-                credentials: "include"
-            })
-                .then(response => response.json())
-                .then(data => {
-                    window.location.href = "/login";
-                })
-                .catch(error => {
-                    console.error("Logout failed:", error);
-                    alert("Failed to logout. Try again.");
-                });
-        }
-
-
-        function showMessage(text, color = "success") {
-            const msg = document.getElementById("message");
-            msg.innerText = text;
-            msg.className = `mt-3 fw-bold text-${color}`;
-        }
-
-
-        function addStudent() {
-            const sname = document.getElementById("name").value.trim();
-            const age = document.getElementById("age").value.trim();
-            const course = document.getElementById("course").value.trim();
-
-            if (!sname || !age || !course) {
-                showMessage("All fields are required.", "danger");
-                return;
-            }
-
-            if (isNaN(age) || Number(age) <= 0) {
-                showMessage("Age must be a valid number.", "danger");
-                return;
-            }
-
-            fetch(API_URL, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    sname: sname,
-                    age: Number(age),
-                    course: course
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    showMessage("Student added successfully.");
-                    loadStudents();
-                })
-                .catch(error => {
-                    showMessage("Failed to add student.", "danger");
-                    console.error(error);
-                });
-        }
-
-        let studentsCache = [];
-        let currentPage = 1;
-        const studentsPerPage = 5;
-        function loadStudents(sort = "") {
-            fetch(`${API_URL}?sort=${sort}`, { credentials: "include" })
-                .then(response => response.json())
-                .then(data => {
-                    studentsCache = data;
-                    currentPage = 1;
-                    renderTable(data);
-                });
-        }
-
-        function renderTable(data) {
-            const tableBody = document.getElementById("studentTableBody");
-            tableBody.innerHTML = "";
-
-            const start = (currentPage - 1) * studentsPerPage;
-            const end = start + studentsPerPage;
-            const studentsToShow = data.slice(start, end);
-
-            const showingDiv = document.getElementById("showingText");
-            if (data.length === 0) {
-                showingDiv.innerText = "Showing 0-0 of 0";
-                tableBody.innerHTML = `
-                        <tr>
-                            <td colspan="4">No students found</td>
-                        </tr>    
-                        `;
-                return;
-            }
-            else {
-                const endIndex = Math.min(end, data.length);
-                showingDiv.innerText = `Showing ${start + 1}-${endIndex} of ${data.length}`;
-            }
-
-            studentsToShow.forEach((student, index) => {
-                tableBody.innerHTML += `
-                            <tr>
-                                <td>${start + index + 1}</td>
-                                <td>${student.name}</td>
-                                <td>${student.age}</td>
-                                <td>${student.course}</td>
-                                <td>${new Date(student.created_at).toLocaleDateString()}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-info" onclick="editStudent(${student.id}, '${student.name}', ${student.age}, '${student.course}')">Edit</button>
-                                    <button class="btn btn-sm btn-danger" onclick="deleteStudent(${student.id})">Delete</button>
-                                </td>    
-                            </tr>
-                        `;
-            });
-
-            renderPagination(data.length);
-
-        }
-
-        function renderPagination(totalStudents) {
-            const totalPages = Math.ceil(totalStudents / studentsPerPage);
-            const pagination = document.getElementById("pagination");
-            pagination.innerHTML = "";
-
-            const prevClass = currentPage === 1 ? "disabled" : "";
-            pagination.innerHTML += `
-                <li class="page-item ${prevClass}">
-                    <a class="page-link" href="#" onclick="goToPage(${currentPage - 1})">Previous</a>
-                </li>
-            `;
-
-            for (let i = 1; i <= totalPages; i++) {
-                const activeClass = currentPage === i ? "active" : "";
-                pagination.innerHTML += `
-                    <li class="page-item ${activeClass}">
-                        <a class="page-link" href="#" onclick="goToPage(${i})">${i}</a>
-                    </li>
-                `;
-            }
-
-            const nextClass = currentPage === totalPages ? "disabled" : "";
-            pagination.innerHTML += `
-                <li class="page-item ${nextClass}">
-                    <a class="page-link" href="#" onclick="goToPage(${currentPage + 1})">Next</a>
-                </li>
-            `;
-        }
-
-        function goToPage(page) {
-            const totalPages = Math.ceil(studentsCache.length / studentsPerPage);
-            if (page < 1 || page > totalPages)
-                return;
-            currentPage = page;
-            renderTable(studentsCache);
-        }
-
-
-        let selectedStudentId = null;
-
-        function editStudent(id, name, age, course) {
-            selectedStudentId = id;
-            document.getElementById("name").value = name;
-            document.getElementById("age").value = age;
-            document.getElementById("course").value = course;
-
-            document.getElementById("updateBtn").classList.remove("d-none");
-            document.getElementById("cancelBtn").classList.remove("d-none");
-            document.getElementById("addBtn").disabled = true;
-        }
-
-        function cancelEdit() {
-            selectedStudentId = null;
-            document.getElementById("name").value = "";
-            document.getElementById("age").value = "";
-            document.getElementById("course").value = "";
-
-            document.getElementById("updateBtn").classList.add("d-none");
-            document.getElementById("cancelBtn").classList.add("d-none");
-
-            document.getElementById("addBtn").disabled = false;
-
-            document.getElementById("message").innerText = "";
-        }
-
-
-        function updateStudent() {
-            if (!selectedStudentId) {
-                alert("No student selected");
-                return;
-            }
-
-            const nameInput = document.getElementById("name");
-            const ageInput = document.getElementById("age");
-            const courseInput = document.getElementById("course");
-
-            const sname = nameInput.value.trim();
-            const age = ageInput.value.trim();
-            const course = courseInput.value.trim();
-
-            if (!sname || !age || !course) {
-                showMessage("All fields are required.", "danger");
-                return;
-            }
-
-            if (isNaN(age) || Number(age) <= 0) {
-                showMessage("Age must be a valid number.", "danger");
-                return;
-            }
-
-            fetch(`${API_URL}/${selectedStudentId}`, {
-                method: "PUT",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    sname: sname,
-                    age: Number(age),
-                    course: course
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        showMessage(data.error, "danger");
-                        return;
-                    }
-
-                    showMessage(data.message, "success");
-
-                    selectedStudentId = null;
-
-                    nameInput.value = "";
-                    ageInput.value = "";
-                    courseInput.value = "";
-
-                    document.getElementById("updateBtn").classList.add("d-none");
-                    document.getElementById("cancelBtn").classList.add("d-none");
-                    document.getElementById("addBtn").disabled = false;
-
-                    loadStudents();
-                })
-                .catch(() => {
-                    showMessage("Something went wrong. Please try again.", "danger");
-                });
-        }
-
-        function deleteStudent(id) {
-            if (!confirm("Are you sure you want to delete?")) {
-                return;
-            }
-
-            fetch(`${API_URL}/${id}`, {
-                method: "DELETE",
-                credentials: "include",
-            })
-                .then(response => response.json())
-                .then(data => {
-                    showMessage(data.message);
-                    loadStudents();
-                });
-
-        }
-
-        window.onload = function () {
-            loadStudents();
-        };
-    </script>
-
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 
 </html>

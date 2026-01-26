@@ -1,6 +1,6 @@
-# Backend Data Management Application (Python + MySQL)
+# Student Management System – Full-Stack Web Application (Flask + MySQL)
 
-A **full-stack Student Management System** built with **Python (Flask), MySQL, and Bootstrap**, allowing users to **register, login, manage students**, and perform CRUD operations via both **web interface** and **CLI tool**.  
+A **full-stack Student Management System** built with **Python (Flask), MySQL, and Custom CSS**, allowing users to **register, login, manage students**, and perform CRUD operations via both **web interface** and **CLI tool**.  
 
 This project demonstrates **web development, REST API design, authentication, database integration, and frontend-backend interaction**, making it ideal for showcasing full-stack skills.
 
@@ -18,20 +18,41 @@ This project demonstrates **web development, REST API design, authentication, da
 - Add, Update, and Delete student records.
 - View all students with **pagination**.
 - Sort students by **name, creation date, and last updated date**.
-- Dynamic **dashboard interface** built with **Bootstrap 5**.
+- Dynamic **dashboard interface** built with **Custom CSS**.
 
 ### **CLI Interface**
-- Command-line interface to manage students offline.
-- Add, View, Update, Delete student records via terminal.
-- Validates user input for age, name, and course.
+- Built a Python-based CLI tool for managing students without the web UI
+- Supports Add, View, Update, and Delete operations
+- Implements input validation and database interaction
+- Demonstrates separation of concerns between CLI and web layers
 
 ### **Tech Stack**
 - **Editor:** VS Code
 - **Backend:** Python, Flask, Flask-CORS
 - **Database:** MySQL
-- **Frontend:** HTML, Bootstrap 5, JavaScript (Fetch API)
+- **Frontend:** HTML, Custom CSS, JavaScript (Fetch API)
 - **Security:** Password hashing, session management
 - **Others:** dotenv for environment configuration
+
+---
+
+## 🔹 Key Highlights
+
+- Designed and developed a full-stack web application using Flask and MySQL
+- Implemented session-based authentication with secure password hashing
+- Built RESTful APIs for student CRUD operations
+- Developed a responsive, Bootstrap-free dashboard using custom CSS
+- Implemented pagination, sorting, and input validation
+- Created a CLI tool to manage students without the web interface
+
+---
+
+## 🔹 API Design
+
+- RESTful API endpoints for student management
+- JSON-based request and response handling
+- Proper HTTP methods (GET, POST, PUT, DELETE)
+- Session-protected routes for authenticated users
 
 ---
 
@@ -71,8 +92,24 @@ student-management-system-python/
 ├── frontend/
 │   ├── static/
 │   │   ├── css/
+│   │   │   ├── main_style.css
+│   │   │   └── style.css
 │   │   ├── images/
+│   │   │   ├── screenshots/
+│   │   │   │   ├── dashboard_ss.png
+│   │   │   │   ├── forgot_password_ss.png
+│   │   │   │   ├── login_ss.png
+│   │   │   │   ├── register_ss.png
+│   │   │   │   └── student_list_ss.png
+│   │   │   ├── ForgotPassword_Background.jpg
+│   │   │   ├── Index_Background.jpg
+│   │   │   ├── Login_Background.jpg
+│   │   │   └── Register_Background.jpg
 │   │   └── js/
+│   │       ├── forgot_password.js
+│   │       ├── index.js
+│   │       ├── login.js
+│   │       └── register.js
 │   │
 │   └── templates/
 │       ├── login.html
@@ -84,6 +121,25 @@ student-management-system-python/
 ├── .env
 ├── README.md
 └── requirements.txt
+
+---
+
+## 🔹 Screenshots
+
+- **Login Page**  
+![Login](frontend/static/images/screenshots/login_ss.png)
+
+- **Register Page**  
+![Login](frontend/static/images/screenshots/register_ss.png)
+
+- **Dashboard / Add Student**  
+![Dashboard](frontend/static/images/screenshots/dashboard_ss.png)
+
+- **Student List with Pagination**  
+![Student List](frontend/static/images/screenshots/student_list_ss.png)
+
+- **Forgot Password Page**  
+![Forgot Password](frontend/static/images/screenshots/forgot_password_ss.png)
 
 ---
 
@@ -144,7 +200,7 @@ python -m backend.cli
 
 ## 🔹 Skills & Learnings Demonstrated
 
-- Full-stack development with Python Flask and Bootstrap
+- Full-stack development with Python Flask and Custom CSS
 - RESTful API design with CRUD operations
 - Session-based authentication and password hashing
 - Database integration with MySQL
@@ -169,10 +225,11 @@ python -m backend.cli
 
 Subhandu Ghosh
 MSc Computer Science
-Backend & Full-Stack Developer (Fresher)
+Backend & Full-Stack Developer  
+Strong foundation in Flask, REST APIs, MySQL, and Web Application Security
 
 ---
 
 ## 🔹 Purpose
 
-This Student Management System is a full-stack web application built with Python Flask, MySQL, and Bootstrap that enables users to securely register, log in, and manage student records with features like add, update, delete, sorting, and pagination. It demonstrates practical CRUD operations, session management, and responsive UI development, making it an ideal portfolio project for freshers to showcase real-world web development skills.
+This project was developed to demonstrate real-world full-stack development skills, including authentication, RESTful API design, database integration, and frontend-backend interaction using Python Flask and MySQL.
