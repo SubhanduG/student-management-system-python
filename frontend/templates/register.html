@@ -8,26 +8,31 @@
 </head>
 
 <body class="bg-container register-bg">
-    <div class="row justify-content-center align-items-center vh-100">
-        <div class="col-md-4">
-            <div class="card shadow">
-                <div class="card-body">
-                    <h3 class="text-center mb-4">✒️ Register</h3>
+    <div class="auth-container">
+        <div class="auth-row justify-content-center align-items-center vh-100">
+            <div class="auth-col-md-4">
+                <div class="auth-card shadow">
+                    <div class="card-body">
+                        <h3 class="text-center mb-4">✒️ Register</h3>
 
-                    <div id="msg"></div>
+                        <div id="msg"></div>
 
-                    <form id="registerForm" action="/register">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" required>
+                        <form id="registerForm" action="{{ url_for('auth.register') }}" method="POST">
+                            <div class="mb-3">
+                                <label for="username">Username</label>
+                                <input type="text" id="username" name="username" class="form-control" required>
+                            </div>
 
-                        <label for="password">Password</label>
-                        <input type="password" id="password" required>
+                            <div class="mb-3">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" name="password" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Register</button>
+                        </form>
 
-                        <button type="submit" class="btn btn-success w-100">Register</button>
-                    </form>
-
-                    <div class="text-center mt-3">
-                        <a href="/login">Already have an account?</a>
+                        <div class="text-center mt-3">
+                            <a href="{{ url_for('auth.login') }}">Already have an account?</a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -92,7 +92,6 @@ student-management-system-python/
 ├── frontend/
 │   ├── static/
 │   │   ├── css/
-│   │   │   ├── main_style.css
 │   │   │   └── style.css
 │   │   ├── images/
 │   │   │   ├── screenshots/

@@ -10,21 +10,32 @@ auth_bp = Blueprint("auth", __name__)
 def register():
     data = request.get_json(silent=True) or {}
 
-    if not data.get("username") or not data.get("password"):
-        return jsonify({"error": "Invalid input"}), 400
+    username = data.get("username")
+    password = data.get("password")
+
+    if not username or not password:
+        return jsonify({"error": "Username and password are required"}), 400
 
     try:
-        create_user(data["username"], data["password"])
+        create_user(username, password)
         return jsonify({"message": "Registration successful"}), 201
-    except Exception:
-        return jsonify({"error": "Username already exists"}), 400
+    except ValueError as ve:
+        return jsonify({"error": str(ve)}), 400
+    except Exception as e:
+        return jsonify({"error": "Internal server error"}), 500
 
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
     data = request.get_json(silent=True) or {}
 
-    user = authenticate_user(data.get("username"), data.get("password"))
+    username = data.get("username")
+    password = data.get("password")
+
+    if not username or not password:
+        return jsonify({"error": "Username and password are required"}), 400
+
+    user = authenticate_user(username, password)
     if not user:
         return jsonify({"error": "Invalid credentials"}), 401
 
@@ -42,10 +53,13 @@ def logout():
 def forgot_password():
     data = request.get_json(silent=True) or {}
 
-    if not data.get("username") or not data.get("new_password"):
-        return jsonify({"error": "Invalid input"}), 400
+    username = data.get("username")
+    new_password = data.get("new_password")
 
-    if reset_password(data["username"], data["new_password"]):
+    if not username or not new_password:
+        return jsonify({"error": "Username and new password are required"}), 400
+
+    if reset_password(username, new_password):
         return jsonify({"message": "Password reset successful"}), 200
 
     return jsonify({"error": "Username not found"}), 404

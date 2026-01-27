@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, session
 from backend.app.services.students_service import (
-    fetch_students, create_student, update_student, delete_student)
+    fetch_students, create_student, update_student, delete_student
+)
 
 students_bp = Blueprint("students", __name__, url_prefix="/students")
 
@@ -15,9 +16,11 @@ def get_students():
         return jsonify({"error": "Unauthorized"}), 401
 
     sort = request.args.get("sort", "created_desc")
-    students = fetch_students(sort)
-
-    return jsonify(students), 200
+    try:
+        students = fetch_students(sort)
+        return jsonify(students), 200
+    except Exception:
+        return jsonify({"error": "Failed to fetch students"}), 500
 
 
 @students_bp.route("", methods=["POST"])
@@ -26,20 +29,22 @@ def add_student():
         return jsonify({"error": "Unauthorized"}), 401
 
     data = request.get_json(silent=True) or {}
-
-    sname = data.get("sname")
+    sname = data.get("sname", "").strip()
     age = data.get("age")
-    course = data.get("course")
+    course = data.get("course", "").strip()
 
     if not sname or not age or not course:
-        return jsonify({"error": "Invalid input data"}), 400
+        return jsonify({"error": "All fields are required"}), 400
 
     try:
-        create_student({
-            "sname": sname.strip(),
-            "age": int(age),
-            "course": course.strip()
-        })
+        age = int(age)
+        if age <= 0:
+            raise ValueError
+    except (ValueError, TypeError):
+        return jsonify({"error": "Age must be a positive number"}), 400
+
+    try:
+        create_student({"sname": sname, "age": age, "course": course})
         return jsonify({"message": "Student added successfully"}), 201
     except Exception:
         return jsonify({"error": "Failed to add student"}), 500
@@ -51,20 +56,28 @@ def edit_student(student_id):
         return jsonify({"error": "Unauthorized"}), 401
 
     data = request.get_json(silent=True) or {}
+    sname = data.get("sname", "").strip()
+    age = data.get("age")
+    course = data.get("course", "").strip()
 
-    if not all(k in data for k in ("sname", "age", "course")):
-        return jsonify({"error": "Invalid input data"}), 400
+    if not sname or not age or not course:
+        return jsonify({"error": "All fields are required"}), 400
 
-    success = update_student(student_id, {
-        "sname": data["sname"].strip(),
-        "age": int(data["age"]),
-        "course": data["course"].strip()
-    })
+    try:
+        age = int(age)
+        if age <= 0:
+            raise ValueError
+    except (ValueError, TypeError):
+        return jsonify({"error": "Age must be a positive number"}), 400
 
-    if not success:
-        return jsonify({"error": "Student not found"}), 404
-
-    return jsonify({"message": "Student updated successfully"}), 200
+    try:
+        success = update_student(
+            student_id, {"sname": sname, "age": age, "course": course})
+        if not success:
+            return jsonify({"error": "Student not found"}), 404
+        return jsonify({"message": "Student updated successfully"}), 200
+    except Exception:
+        return jsonify({"error": "Failed to update student"}), 500
 
 
 @students_bp.route("/<int:student_id>", methods=["DELETE"])
@@ -72,7 +85,9 @@ def remove_student(student_id):
     if not is_logged_in():
         return jsonify({"error": "Unauthorized"}), 401
 
-    if not delete_student(student_id):
-        return jsonify({"error": "Student not found"}), 404
-
-    return jsonify({"message": "Student deleted successfully"}), 200
+    try:
+        if not delete_student(student_id):
+            return jsonify({"error": "Student not found"}), 404
+        return jsonify({"message": "Student deleted successfully"}), 200
+    except Exception:
+        return jsonify({"error": "Failed to delete student"}), 500

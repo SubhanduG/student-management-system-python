@@ -4,50 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Student Management System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body class="index-bg">
 
     <div class="container">
 
-        <div class="app-header">
+        <div class="app-header d-flex justify-content-between align-items-center my-3">
             <div class="app-header-left">
                 <h1>🎓 Student Management System</h1>
                 <p>Manage students, courses, and records</p>
             </div>
-            <button class="btn-danger" onclick="logout()">Logout</button>
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
         </div>
 
-        <div class="card">
-            <div class="card-header bg-primary">Add / Update Student</div>
-
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">Add / Update Student</div>
             <div class="card-body">
-                <div class="form-row">
-                    <input type="text" id="name" placeholder="Student Name">
-                    <input type="number" id="age" placeholder="Age" min="1" max="99"
+                <div class="form-row mb-3 d-flex gap-2">
+                    <input type="text" id="name" placeholder="Student Name" class="form-control">
+                    <input type="number" id="age" placeholder="Age" min="1" max="99" class="form-control"
                         oninput="this.value=Math.min(this.value,99)">
-                    <input type="text" id="course" placeholder="Course">
+                    <input type="text" id="course" placeholder="Course" class="form-control">
                 </div>
 
-                <div class="btn-row">
-                    <button id="addBtn" class="btn-success" onclick="addStudent()">Add Student</button>
-                    <button id="updateBtn" class="btn-warning d-none" onclick="updateStudent()">Update Student</button>
-                    <button id="cancelBtn" class="btn-secondary d-none" onclick="cancelEdit()">Cancel Edit</button>
+                <div class="btn-row d-flex gap-2">
+                    <button id="addBtn" class="btn btn-success" onclick="addStudent()">Add Student</button>
+                    <button id="updateBtn" class="btn btn-warning d-none" onclick="updateStudent()">Update
+                        Student</button>
+                    <button id="cancelBtn" class="btn btn-secondary d-none" onclick="cancelEdit()">Cancel Edit</button>
                 </div>
 
-                <p id="message"></p>
+                <p id="message" class="mt-2"></p>
             </div>
         </div>
 
         <div class="card">
-            <div class="card-header bg-dark card-header-flex">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                 <span>Student List</span>
-                <button class="btn-secondary" onclick="loadStudents()">Refresh</button>
+                <button class="btn btn-secondary btn-sm" onclick="loadStudents()">Refresh</button>
             </div>
 
-            <div class="filter-row">
-                <select onchange="loadStudents(this.value)">
+            <div class="filter-row my-2">
+                <select onchange="loadStudents(this.value)" class="form-select w-auto">
                     <option value="">Sort By</option>
                     <option value="name">Name (A-Z)</option>
                     <option value="created_asc">Oldest First</option>
@@ -56,9 +56,9 @@
                 </select>
             </div>
 
-            <div class="card-body">
-                <table>
-                    <thead>
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0">
+                    <thead class="table-dark">
                         <tr>
                             <th>S.No</th>
                             <th>Name</th>
@@ -72,8 +72,8 @@
                 </table>
             </div>
 
-            <div id="showingText" class="showing-text"></div>
-            <ul id="pagination" class="pagination"></ul>
+            <div id="showingText" class="p-2 text-center"></div>
+            <ul id="pagination" class="pagination justify-content-center"></ul>
         </div>
 
     </div>

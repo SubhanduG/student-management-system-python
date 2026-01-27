@@ -25,9 +25,9 @@ form.addEventListener("submit", async function (e) {
 
         if (response.ok) {
             msgDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
-            setTimeout(() => { window.location.href = "/login"; }, 1000);
+            setTimeout(() => { window.location.href = "/login"; }, 1500);
         } else {
-            msgDiv.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+            msgDiv.innerHTML = `<div class="alert alert-danger">${data.error || "Registration failed."}</div>`;
         }
     } catch (err) {
         console.error(err);

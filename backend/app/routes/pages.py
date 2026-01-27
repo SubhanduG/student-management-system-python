@@ -24,6 +24,8 @@ def register_page():
 
 @pages_bp.route("/forgot-password")
 def forgot_password_page():
+    if "user_id" in session:
+        return redirect(url_for("pages.dashboard"))
     return render_template("forgot_password.html")
 
 
