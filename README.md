@@ -1,129 +1,72 @@
-# Student Management System – Full-Stack Web Application (Flask + MySQL)
+# Student Management System
 
-A **full-stack Student Management System** built with **Python (Flask), MySQL, and Custom CSS**, allowing users to **register, login, manage students**, and perform CRUD operations via both **web interface** and **CLI tool**.  
+A full-stack **Student Management System** built using **Python
+(Flask)** and **MySQL**.\
+This project demonstrates backend API development, authentication,
+database design, and frontend integration with real-world features like
+pagination and sorting.
 
-This project demonstrates **web development, REST API design, authentication, database integration, and frontend-backend interaction**, making it ideal for showcasing full-stack skills.
+------------------------------------------------------------------------
 
----
+## 📘 Project Overview
 
-## 🔹 Features
+The Student Management System is designed to manage student records
+securely and efficiently.\
+It supports authentication, CRUD operations, sorting, pagination, and
+audit fields, following a clean and modular Flask architecture.
 
-### **User Authentication**
-- Register new users.
-- Login with **session-based authentication**.
-- Reset forgotten passwords.
-- Passwords securely **hashed using Werkzeug**.
+------------------------------------------------------------------------
 
-### **Student Management**
-- Add, Update, and Delete student records.
-- View all students with **pagination**.
-- Sort students by **name, creation date, and last updated date**.
-- Dynamic **dashboard interface** built with **Custom CSS**.
+## 🚀 Features
 
-### **CLI Interface**
-- Built a Python-based CLI tool for managing students without the web UI
-- Supports Add, View, Update, and Delete operations
-- Implements input validation and database interaction
-- Demonstrates separation of concerns between CLI and web layers
+-   Session-based authentication (login & logout)
+-   Secure management of student records
+-   Full CRUD operations (Create, Read, Update, Delete)
+-   Server-side sorting (name, created date, updated date)
+-   Pagination for large datasets
+-   Audit fields using `created_at` and `updated_at`
+-   RESTful APIs using Flask
+-   Dynamic frontend using JavaScript and CSS
 
-### **Tech Stack**
-- **Editor:** VS Code
-- **Backend:** Python, Flask, Flask-CORS
-- **Database:** MySQL
-- **Frontend:** HTML, Custom CSS, JavaScript (Fetch API)
-- **Security:** Password hashing, session management
-- **Others:** dotenv for environment configuration
+------------------------------------------------------------------------
 
----
+## 🛠️ Tech Stack
 
-## 🔹 Key Highlights
+**Backend** - Python - Flask - Flask-CORS
 
-- Designed and developed a full-stack web application using Flask and MySQL
-- Implemented session-based authentication with secure password hashing
-- Built RESTful APIs for student CRUD operations
-- Developed a responsive, Bootstrap-free dashboard using custom CSS
-- Implemented pagination, sorting, and input validation
-- Created a CLI tool to manage students without the web interface
+**Database** - MySQL
 
----
+**Frontend** - HTML - JavaScript - CSS
 
-## 🔹 API Design
+**Tools & Concepts** - REST APIs - Session-based authentication -
+Environment variables - Modular Flask architecture - Git & GitHub
 
-- RESTful API endpoints for student management
-- JSON-based request and response handling
-- Proper HTTP methods (GET, POST, PUT, DELETE)
-- Session-protected routes for authenticated users
+------------------------------------------------------------------------
 
----
+## 📂 Project Structure
 
-## 🔹 Project Structure
+    backend/
+      app/
+        routes/        -> API routes
+        services/      -> Business logic
+        config.py      -> Application configuration
+        extensions.py -> Flask extensions
+      run.py           -> Application entry point
 
-student-management-system-python/
-│
-├── backend/
-│   ├── app/
-│   │   ├── routes/
-│   │   │   ├── __init__.py
-│   │   │   ├── auth.py
-│   │   │   ├── pages.py
-│   │   │   └── students.py
-│   │   │
-│   │   ├── services/
-│   │   │   ├── __init__.py
-│   │   │   ├── auth_service.py
-│   │   │   └── students_service.py
-│   │   │
-│   │   ├── __init__.py
-│   │   ├── config.py
-│   │   └── extensions.py
-│   │
-│   ├── cli/
-│   │   ├── __init__.py
-│   │   ├── __main__.py
-│   │   └── main.py
-│   │
-│   ├── __init__.py
-│   └── run.py
-│
-├── database/
-│   ├── db_config.py
-│   └── schema.sql
-│
-├── frontend/
-│   ├── static/
-│   │   ├── css/
-│   │   │   └── style.css
-│   │   ├── images/
-│   │   │   ├── screenshots/
-│   │   │   │   ├── dashboard_ss.png
-│   │   │   │   ├── forgot_password_ss.png
-│   │   │   │   ├── login_ss.png
-│   │   │   │   ├── register_ss.png
-│   │   │   │   └── student_list_ss.png
-│   │   │   ├── ForgotPassword_Background.jpg
-│   │   │   ├── Index_Background.jpg
-│   │   │   ├── Login_Background.jpg
-│   │   │   └── Register_Background.jpg
-│   │   └── js/
-│   │       ├── forgot_password.js
-│   │       ├── index.js
-│   │       ├── login.js
-│   │       └── register.js
-│   │
-│   └── templates/
-│       ├── login.html
-│       ├── register.html
-│       ├── forgot_password.html
-│       └── index.html
-│
-├── venv/
-├── .env
-├── README.md
-└── requirements.txt
+    frontend/
+      templates/       -> HTML templates
+      static/          -> CSS and JavaScript files
 
----
+    database/
+      schema.sql       -> Database schema
+      db_config.py     -> Database connection
 
-## 🔹 Screenshots
+    requirements.txt
+    README.md
+
+------------------------------------------------------------------------
+
+## 📸 Screenshots
 
 - **Login Page**  
 ![Login](frontend/static/images/screenshots/login_ss.png)
@@ -131,104 +74,133 @@ student-management-system-python/
 - **Register Page**  
 ![Register](frontend/static/images/screenshots/register_ss.png)
 
+- **Forgot Password Page**  
+![Forgot Password](frontend/static/images/screenshots/forgot_password_ss.png)
+
 - **Dashboard / Add Student**  
 ![Dashboard](frontend/static/images/screenshots/dashboard_ss.png)
 
 - **Student List with Pagination**  
 ![Student List](frontend/static/images/screenshots/student_list_ss.png)
 
-- **Forgot Password Page**  
-![Forgot Password](frontend/static/images/screenshots/forgot_password_ss.png)
+------------------------------------------------------------------------
 
----
+## 🗄️ Database Schema (Summary)
 
-## 🔹 Installation
+### Students Table
 
-### 1. Clone the repository
-```bash
+-   id
+-   sname
+-   age
+-   course
+-   created_at
+-   updated_at
+
+### Users Table
+
+-   id
+-   username
+-   password
+-   created_at
+
+------------------------------------------------------------------------
+
+## ▶️ How to Run Locally
+
+### 1️⃣ Clone the Repository
+
+``` bash
 git clone https://github.com/SubhanduG/student-management-system-python.git
 cd student-management-system-python
 ```
 
-### 2. Setup Python environment
-```bash
+### 2️⃣ Create Virtual Environment
+
+``` bash
 python -m venv venv
-source venv/bin/activate   # Linux / Mac
-venv\Scripts\activate      # Windows
 ```
 
-### 3. Install dependencies
-```bash
+### 3️⃣ Activate Virtual Environment
+
+**Windows**
+
+``` bash
+venv\Scripts\activate
+```
+
+**Linux / macOS**
+
+``` bash
+source venv/bin/activate
+```
+
+### 4️⃣ Install Dependencies
+
+``` bash
 pip install -r requirements.txt
 ```
 
-### 4. Configure Database
+### 5️⃣ Configure Environment Variables
 
-🔹Create a MySQL database:
-```sql
-CREATE DATABASE student_db;
-```
+Create a `.env` file in the project root:
 
-🔹Update .env with your MySQL credentials:
-```ini
+``` env
 DB_HOST=localhost
 DB_USER=root
-DB_PASSWORD=yourpassword
+DB_PASSWORD=your_password
 DB_NAME=student_db
-SECRET_KEY=super-secret-key
-FLASK_ENV=development
+SECRET_KEY=dev-secret-key
 ```
 
-🔹Run the SQL schema:
-```bash
-mysql -u root -p student_db < database/schema.sql
+### 6️⃣ Setup Database
+
+Run SQL commands from `database/schema.sql`.
+
+### 7️⃣ Run Application
+
+``` bash
+python backend/run.py
 ```
 
-### 5. Run the Flask App
-```bash
-python -m backend.run
-```
-Access the app at: http://127.0.0.1:5000
+Open browser:
 
-### 6. Run the CLI Tool (Optional)
-```bash
-python -m backend.cli
-```
+    http://127.0.0.1:5000
 
----
+------------------------------------------------------------------------
 
-## 🔹 Skills & Learnings Demonstrated
+## 🔐 Security Notes
 
-- Full-stack development with Python Flask and Custom CSS
-- RESTful API design with CRUD operations
-- Session-based authentication and password hashing
-- Database integration with MySQL
-- Frontend interactivity using JavaScript Fetch API
-- CLI development for offline management
-- Handling pagination, sorting, and validation
-- Environment configuration using dotenv
+-   Database credentials are stored using environment variables
+-   `.env` files and virtual environments are excluded from version
+    control
+-   Passwords are securely hashed
+-   Protected APIs require authentication
 
----
+------------------------------------------------------------------------
 
-## 🔹 Future Enhancements
+## 🎓 Learning Outcomes
 
-- Add user roles (Admin/Student) and permissions.
-- Improve UI/UX with a modern frontend framework (React/Vue).
-- Add search functionality for students.
-- Implement JWT authentication for API security.
-- Deploy to Heroku or AWS for live demonstration.
+-   Designed REST APIs using Flask
+-   Implemented authentication and access control
+-   Worked with relational databases and SQL queries
+-   Built pagination and sorting mechanisms
+-   Integrated frontend UI with backend APIs
+-   Applied clean project structuring and configuration management
 
----
+------------------------------------------------------------------------
 
-## 🔹 Author
+## 🔮 Future Improvements
 
-Subhandu Ghosh
-MSc Computer Science
-Backend & Full-Stack Developer  
-Strong foundation in Flask, REST APIs, MySQL, and Web Application Security
+-   Role-based access control
+-   Admin dashboard
+-   Export student data
+-   Improved UI and UX
+-   Cloud deployment
 
----
+------------------------------------------------------------------------
 
-## 🔹 Purpose
+## 👤 Author
 
-This project was developed to demonstrate real-world full-stack development skills, including authentication, RESTful API design, database integration, and frontend-backend interaction using Python Flask and MySQL.
+**Subhandu Ghosh**\
+MSc Computer Science\
+Python Backend & Full-Stack Developer\
