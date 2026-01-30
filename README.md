@@ -50,7 +50,7 @@ Environment variables - Modular Flask architecture - Git & GitHub
         routes/        -> API routes
         services/      -> Business logic
         config.py      -> Application configuration
-        extensions.py -> Flask extensions
+        extensions.py  -> Flask extensions
       run.py           -> Application entry point
 
     frontend/
